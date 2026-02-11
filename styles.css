@@ -1054,4 +1054,142 @@
       text-align:center;
     }
   }
+  /* =========================
+   Mobile Readability Pack
+   ========================= */
+@media (max-width: 860px){
+
+    /* More breathing room overall */
+    .section{ padding: 44px 0; }
+    .hero{ padding: 46px 0 30px; }
+  
+    /* Prevent "wall of text" by limiting line length */
+    .hero__content,
+    .section__head,
+    .contact__left{
+      max-width: 680px;
+      margin-inline: auto;
+    }
+  
+    /* Headings: slightly smaller but still premium */
+    h1{
+      font-size: clamp(1.9rem, 6.2vw, 2.35rem);
+      line-height: 1.08;
+      letter-spacing: -0.03em;
+      margin-bottom: 10px;
+    }
+    .section__head h2{
+      font-size: clamp(1.4rem, 5vw, 1.85rem);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+  
+    /* Paragraph rhythm: bigger line-height + clear spacing */
+    p{
+      font-size: 1.02rem;
+      line-height: 1.65;
+      margin: 0 0 14px;
+    }
+    .lead{
+      font-size: 1.05rem;
+      line-height: 1.7;
+      max-width: 52ch;
+      margin-bottom: 16px;
+    }
+    .muted{
+      color: rgba(17,18,20,.68); /* still readable but less “heavy” */
+    }
+  
+    /* Make "head" paragraphs less dense */
+    .section__head p{
+      max-width: 58ch;
+      margin-top: 6px;
+    }
+  
+    /* Turn dense blocks into visually grouped chunks */
+    .panel, .card, .quote, .step, .tile, .info{
+      padding: 16px;
+      border-radius: 20px;
+    }
+  
+    /* Reduce visual overload from multiple stacked boxes */
+    .grid, .tiles, .steps{
+      gap: 12px;
+    }
+  
+    /* Lists: tighter + smaller to avoid looking like an essay */
+    .list, .tile__list{
+      font-size: .98rem;
+      line-height: 1.55;
+      margin-top: 10px;
+    }
+    .list li, .tile__list li{
+      margin: 6px 0;
+    }
+  
+    /* Trust items: keep them short and punchy */
+    .trust{
+      gap: 10px;
+      margin-top: 14px;
+    }
+    .trust__item{
+      padding: 12px 14px;
+    }
+    .trust__kpi{
+      font-size: 1.05rem;
+    }
+    .trust__label{
+      font-size: .95rem;
+      line-height: 1.45;
+    }
+  
+    /* Hero actions: make buttons feel less “crowded” */
+    .hero__actions{
+      gap: 10px;
+    }
+    .hero__actions .btn{
+      width: 100%;
+      justify-content: center;
+      padding: 14px 16px;
+    }
+  
+    /* Contact section: stop it feeling like a text dump */
+    .contact__cards{
+      gap: 10px;
+    }
+  
+    /* Subtle separators between sections to reduce "everything at once" */
+    .section::before{
+      content:"";
+      display:block;
+      height:1px;
+      background: rgba(0,0,0,.06);
+      margin: 0 0 22px;
+    }
+    .section:first-of-type::before{
+      display:none;
+    }
+  
+    /* Chips: wrap nicer + more spacing */
+    .chips{
+      gap: 10px;
+    }
+    .chip{
+      padding: 10px 14px;
+    }
+  }
+  @media (max-width: 860px){
+    .hero__panel .panel{
+      box-shadow: 0 10px 30px rgba(0,0,0,.06);
+    }
+    .panel__sub{
+      margin-bottom: 10px;
+    }
+  }
+  @media (max-width: 860px){
+    .section--alt{
+      border-top: 1px solid rgba(0,0,0,.06);
+      border-bottom: 1px solid rgba(0,0,0,.06);
+    }
+  }
   
