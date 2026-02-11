@@ -483,4 +483,249 @@
     body{ padding-bottom: 74px; }
     .form__row{ grid-template-columns: 1fr; }
   }
+  @media (max-width: 860px){
+    .header__inner{
+      flex-wrap: wrap;
+      gap: 10px;
+    }
   
+    .brand{
+      width: 100%;
+    }
+  
+    .brand__text{
+      display:flex;
+      flex-direction:column;
+    }
+  
+    /* Optional: slightly smaller logo on mobile */
+    .brand__logo{
+      width:40px;
+      height:40px;
+      border-radius: 14px;
+    }
+  }
+  /* HiPages rating badge */
+.ratingbar{
+    margin: 10px 0 18px;
+  }
+  
+  .ratingbar__link{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+    text-decoration: none;
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .ratingbar__brand{
+    font-weight: 900;
+    letter-spacing: -0.01em;
+  }
+  
+  .stars{
+    display:flex;
+    gap: 2px;
+    margin-left: auto;
+  }
+  
+  .star{
+    font-size: 1rem;
+    line-height: 1;
+    opacity: .22;
+  }
+  
+  .star.is-on{
+    opacity: 1;
+    color: var(--red);
+  }
+  
+  .ratingbar__text{
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  
+  .ratingbar__cta{
+    font-weight: 900;
+    color: var(--red-dark);
+    white-space: nowrap;
+  }
+  
+  .ratingbar__link:hover{
+    border-color: rgba(193,18,31,.35);
+    background: rgba(193,18,31,.03);
+  }
+  
+  /* Mobile: stack neatly */
+  @media (max-width: 860px){
+    .ratingbar__link{
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    .stars{
+      margin-left: 0;
+    }
+    .ratingbar__cta{
+      width:100%;
+    }
+  }
+  @media (max-width: 860px){
+    .topbar{ display:none; }
+  }
+  /* Subtle "alive" polish */
+:root{
+    --ease: cubic-bezier(.2,.8,.2,1);
+  }
+  
+  .card, .trust__item, .quote, .step, .panel, .info{
+    transition: transform .18s var(--ease), box-shadow .18s var(--ease), border-color .18s var(--ease), background .18s var(--ease);
+  }
+  
+  .card:hover, .trust__item:hover, .quote:hover, .step:hover, .info:hover{
+    transform: translateY(-3px);
+    box-shadow: 0 14px 34px rgba(0,0,0,.10);
+    border-color: rgba(193,18,31,.28);
+  }
+  
+  .btn{
+    transition: transform .12s var(--ease), box-shadow .18s var(--ease), background .18s var(--ease);
+  }
+  .btn:hover{ transform: translateY(-1px); }
+  .btn:active{ transform: translateY(0px); }
+  
+  /* Professional section divider line */
+  .section__head{
+    position: relative;
+    padding-bottom: 12px;
+  }
+  .section__head::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width: 72px; height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--red), rgba(193,18,31,.15));
+  }
+  
+  /* HiPages badge styling */
+  .ratingbar{ margin: 10px 0 18px; }
+  .ratingbar__link{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: #fff;
+    text-decoration:none;
+    box-shadow: var(--shadow-soft);
+  }
+  .ratingbar__brand{
+    font-weight: 900;
+    letter-spacing: -0.01em;
+  }
+  .stars{ display:flex; gap:2px; margin-left:auto; }
+  .star{ font-size: 1rem; line-height:1; opacity:.22; }
+  .star.is-on{ opacity:1; color: var(--red); }
+  .ratingbar__text{ color: var(--muted); white-space: nowrap; }
+  .ratingbar__cta{ font-weight: 900; color: var(--red-dark); white-space: nowrap; }
+  .ratingbar__link:hover{
+    border-color: rgba(193,18,31,.35);
+    background: rgba(193,18,31,.03);
+  }
+  
+  /* Mobile: topbar hidden so header shows the company name first */
+  @media (max-width: 860px){
+    .topbar{ display:none; }
+  
+    .ratingbar__link{
+      flex-wrap: wrap;
+      justify-content: flex-start;
+    }
+    .stars{ margin-left: 0; }
+    .ratingbar__cta{ width: 100%; }
+  }
+/* Modal */
+.modal{
+    display:none;
+    position:fixed; inset:0;
+    z-index: 80;
+  }
+  .modal.is-open{ display:block; }
+  
+  .modal__backdrop{
+    position:absolute; inset:0;
+    background: rgba(0,0,0,.42);
+    border:0; padding:0; margin:0;
+  }
+  
+  .modal__panel{
+    position:absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: min(720px, calc(100% - 28px));
+    background:#fff;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    box-shadow: 0 22px 60px rgba(0,0,0,.22);
+    padding: 16px;
+  }
+  
+  .modal__head{
+    display:flex;
+    align-items:flex-start;
+    justify-content:space-between;
+    gap:12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 10px;
+  }
+  
+  .modal__eyebrow{
+    display:inline-flex;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: rgba(193,18,31,.06);
+    border: 1px solid rgba(193,18,31,.18);
+    font-weight: 800;
+    font-size: .85rem;
+  }
+  
+  .modal__title{ margin: 8px 0 0; letter-spacing:-0.02em; }
+  .modal__desc{ margin: 10px 0 14px; color: var(--muted); }
+  
+  .modal__grid{
+    display:grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+  
+  .modal__item{
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 12px;
+    background:#fff;
+  }
+  .modal__item strong{ display:block; margin-bottom: 4px; }
+  .modal__item span{ color: var(--muted); font-size: .95rem; }
+  
+  .modal__actions{
+    display:flex;
+    gap: 10px;
+    justify-content:flex-end;
+    flex-wrap:wrap;
+  }
+  
+  @media (max-width: 860px){
+    .modal__grid{ grid-template-columns: 1fr; }
+    .modal__actions a{ flex:1; text-align:center; }
+  }
+    
