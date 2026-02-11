@@ -234,4 +234,31 @@ const HIPAGES = {
   window.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && modal?.classList.contains("is-open")) closeModal();
   });
+  // Subtle scroll reveal (Apple-ish)
+(() => {
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+  
+    const targets = document.querySelectorAll(
+      ".trust__item, .card, .step, .quote, .panel, .info, .ratingbar"
+    );
+  
+    targets.forEach(el => {
+      el.style.opacity = "0";
+      el.style.transform = "translateY(12px)";
+    });
+  
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (!e.isIntersecting) return;
+        const el = e.target;
+        el.style.transition = "opacity .6s cubic-bezier(.2,.8,.2,1), transform .6s cubic-bezier(.2,.8,.2,1)";
+        el.style.opacity = "1";
+        el.style.transform = "translateY(0)";
+        io.unobserve(el);
+      });
+    }, { threshold: 0.12 });
+  
+    targets.forEach(el => io.observe(el));
+  })();
   
