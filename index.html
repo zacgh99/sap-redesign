@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Professional pest control in Sydney. Fast response, safe treatments, detailed inspections. Established 2024." />
+  <title>Sydney Advanced Pest Control | Pest Control Sydney</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Professional, neutral font pairing -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <!-- Skip link for accessibility -->
+  <a class="skip" href="#main">Skip to content</a>
+
+  <!-- Top utility bar -->
+  <div class="topbar">
+    <div class="container topbar__inner">
+      <div class="topbar__left">
+        <span class="pill">Established <strong>2024</strong></span>
+        <span class="topbar__meta">Lic. No. <strong>5105787</strong></span>
+      </div>
+      <div class="topbar__right">
+        <a class="topbar__link" href="tel:0403069615" aria-label="Call 0403 069 615">Call: <strong>0403 069 615</strong></a>
+        <span class="dot" aria-hidden="true"></span>
+        <a class="topbar__link" href="mailto:sydadvancedpestcontrol@gmail.com">sydadvancedpestcontrol@gmail.com</a>
+        <span class="dot" aria-hidden="true"></span>
+        <a class="topbar__link" href="https://www.facebook.com/sydneyadvance.pest" target="_blank" rel="noopener noreferrer">
+          Facebook
+        </a>
+      </div>
+      
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header class="header" data-header>
+    <div class="container header__inner">
+      <a class="brand" href="#" aria-label="Home">
+        <img src="assets/logo.png" alt="Sydney Advanced Pest Control logo" class="brand__logo" />
+        <div class="brand__text">
+          <span class="brand__name">Sydney Advanced Pest Control</span>
+          <span class="brand__tag">Fast. Safe. Detailed.</span>
+        </div>
+      </a>
+
+      <nav class="nav" id="site-nav" data-nav>
+        <a class="nav__link" href="#services">Services</a>
+        <a class="nav__link" href="#process">How it works</a>
+        <a class="nav__link" href="#pests">Pests</a>
+        <a class="nav__link" href="#reviews">Reviews</a>
+        <a class="nav__link" href="#faq">FAQ</a>
+        <a class="nav__link" href="#contact">Contact</a>
+      </nav>
+
+      <div class="header__cta">
+        <a class="btn btn--ghost" href="tel:0403069615">Call Now</a>
+        <a class="btn btn--primary" href="#contact">Get a Quote</a>
+      </div>
+    </div>
+
+    <!-- Mobile nav drawer -->
+    <div class="drawer" data-drawer aria-hidden="true">
+      <div class="drawer__panel" role="dialog" aria-modal="true" aria-label="Menu">
+        <div class="drawer__head">
+          <span class="drawer__title">Menu</span>
+          <button class="iconbtn" type="button" data-close>
+            <span class="iconbtn__x" aria-hidden="true"></span>
+            <span class="sr-only">Close menu</span>
+          </button>
+        </div>
+
+        <div class="drawer__links">
+          <a href="#services" data-drawer-link>Services</a>
+          <a href="#process" data-drawer-link>How it works</a>
+          <a href="#pests" data-drawer-link>Pests</a>
+          <a href="#reviews" data-drawer-link>Reviews</a>
+          <a href="#faq" data-drawer-link>FAQ</a>
+          <a href="#contact" data-drawer-link>Contact</a>
+        </div>
+
+        <div class="drawer__actions">
+          <a class="btn btn--ghost w-full" href="tel:0403069615">Call 0403 069 615</a>
+          <a class="btn btn--primary w-full" href="#contact" data-drawer-link>Get a Quote</a>
+          <p class="muted small">Operating across Sydney and surrounding suburbs.</p>
+        </div>
+      </div>
+      <button class="drawer__backdrop" type="button" data-close aria-label="Close menu"></button>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section class="hero">
+      <div class="container hero__inner">
+        <div class="hero__content">
+          <p class="eyebrow">Professional pest control in <strong>Sydney</strong></p>
+          <h1>Take control of your pest problem — properly.</h1>
+          <p class="lead">
+            Detailed inspections, safe treatments, and clear follow-up advice.
+            We focus on long-term prevention, not quick patches.
+          </p>
+
+          <div class="hero__actions">
+            <a class="btn btn--primary" href="#contact">Get a Quote</a>
+            <a class="btn btn--ghost" href="tel:0403069615">Call 0403 069 615</a>
+          </div>
+
+          <div class="trust">
+            <div class="trust__item">
+              <span class="trust__kpi">Same-day</span>
+              <span class="trust__label">availability (when possible)</span>
+            </div>
+            <div class="trust__item">
+              <span class="trust__kpi">Family-run</span>
+              <span class="trust__label">local business</span>
+            </div>
+            <div class="trust__item">
+              <span class="trust__kpi">IPM approach</span>
+              <span class="trust__label">prevention + treatment</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="hero__panel" aria-label="Quick quote">
+          <div class="panel">
+            <h2 class="panel__title">Quick Quote</h2>
+            <p class="panel__sub">Tell us what’s happening — we’ll reply ASAP.</p>
+
+            <form class="form" id="quoteForm">
+              <div class="form__row">
+                <label>
+                  <span>Name</span>
+                  <input name="name" type="text" autocomplete="name" placeholder="Your name" required>
+                </label>
+                <label>
+                  <span>Phone</span>
+                  <input name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="04xx xxx xxx" required>
+                </label>
+              </div>
+
+              <div class="form__row">
+                <label>
+                  <span>Suburb</span>
+                  <input name="suburb" type="text" autocomplete="address-level2" placeholder="e.g. Bankstown" required>
+                </label>
+                <label>
+                  <span>Pest type</span>
+                  <select name="pest" required>
+                    <option value="" selected disabled>Select</option>
+                    <option>Cockroaches</option>
+                    <option>Rats & Mice</option>
+                    <option>Spiders</option>
+                    <option>Ants</option>
+                    <option>Bed Bugs</option>
+                    <option>Bees & Wasps</option>
+                    <option>Fleas</option>
+                    <option>Other</option>
+                  </select>
+                </label>
+              </div>
+
+              <label>
+                <span>Message</span>
+                <textarea name="message" rows="4" placeholder="What are you seeing? Any urgency?"></textarea>
+              </label>
+
+              <button class="btn btn--primary w-full" type="submit">Request Quote</button>
+              <p class="muted small">
+                Prefer to call? <a href="tel:0403069615">0403 069 615</a>
+              </p>
+              <p class="form__note" id="formNote" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services -->
+    <section class="section" id="services">
+      <div class="container">
+        <div class="section__head">
+          <h2>Services</h2>
+          <p class="muted">Residential and commercial pest management with clear reporting and prevention advice.</p>
+        </div>
+
+        <div class="grid grid--3">
+          <article class="card">
+            <h3>General Pest Treatment</h3>
+            <p>Targeted treatment for common household pests, with prevention steps to reduce re-infestation.</p>
+            <ul class="list">
+              <li>Internal + external treatment options</li>
+              <li>Entry-point identification</li>
+              <li>Practical home recommendations</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>Rodent Control</h3>
+            <p>Inspection-led strategy focused on access points, harbourage areas, and ongoing monitoring.</p>
+            <ul class="list">
+              <li>Proofing guidance</li>
+              <li>Safe baiting strategy</li>
+              <li>Follow-up planning</li>
+            </ul>
+          </article>
+
+          <article class="card">
+            <h3>End of Lease / Strata</h3>
+            <p>Reliable service for property managers and strata with tidy documentation and scheduling.</p>
+            <ul class="list">
+              <li>Clear service records</li>
+              <li>On-time appointments</li>
+              <li>Common-area treatments</li>
+            </ul>
+          </article>
+        </div>
+
+        <div class="section__cta">
+          <a class="btn btn--primary" href="#contact">Get a Quote</a>
+          <a class="btn btn--ghost" href="#pests">View Pest Types</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Process -->
+    <section class="section section--alt" id="process">
+      <div class="container">
+        <div class="section__head">
+          <h2>How it works</h2>
+          <p class="muted">A clean, repeatable process — so you know exactly what you’re paying for.</p>
+        </div>
+
+        <div class="steps">
+          <div class="step">
+            <div class="step__num">1</div>
+            <div class="step__body">
+              <h3>Inspection</h3>
+              <p>We check key areas (entry points, moisture sources, harbourage zones) and confirm the pest + risk level.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__num">2</div>
+            <div class="step__body">
+              <h3>Treatment</h3>
+              <p>Targeted products and techniques based on the pest type, environment, and safety requirements.</p>
+            </div>
+          </div>
+
+          <div class="step">
+            <div class="step__num">3</div>
+            <div class="step__body">
+              <h3>Prevention Plan</h3>
+              <p>You get simple follow-up steps (cleaning, sealing, storage, monitoring) to reduce repeat problems.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pest types -->
+    <section class="section" id="pests">
+      <div class="container">
+        <div class="section__head">
+          <h2>Common pest types</h2>
+          <p class="muted">Click a category to jump straight to a quote — we’ll tailor the approach to your situation.</p>
+        </div>
+
+        <div class="chips">
+          <a class="chip" href="#contact">Cockroaches</a>
+          <a class="chip" href="#contact">German Cockroaches</a>
+          <a class="chip" href="#contact">Rats & Mice</a>
+          <a class="chip" href="#contact">Spiders</a>
+          <a class="chip" href="#contact">Ants</a>
+          <a class="chip" href="#contact">Bed Bugs</a>
+          <a class="chip" href="#contact">Bees & Wasps</a>
+          <a class="chip" href="#contact">Fleas</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reviews -->
+    <section class="section section--alt" id="reviews">
+      <div class="container">
+        <div class="section__head">
+          <h2>Customer feedback</h2>
+          <p class="muted">Swap these with real testimonials (name + suburb). Keep it tight and believable.</p>
+        </div>
+
+        <div class="grid grid--3">
+          <figure class="quote">
+            <blockquote>“On time, explained everything clearly, and the issue was sorted fast.”</blockquote>
+            <figcaption>— A. Khan, Parramatta</figcaption>
+          </figure>
+          <figure class="quote">
+            <blockquote>“Very professional. Gave prevention advice that actually helped.”</blockquote>
+            <figcaption>— S. Nguyen, Bankstown</figcaption>
+          </figure>
+          <figure class="quote">
+            <blockquote>“Good communication, clean work, and follow-up was solid.”</blockquote>
+            <figcaption>— J. Patel, Hurstville</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="section" id="faq">
+      <div class="container">
+        <div class="section__head">
+          <h2>FAQ</h2>
+          <p class="muted">Short, direct answers reduce hesitation and increase enquiries.</p>
+        </div>
+
+        <div class="faq" data-faq>
+          <button class="faq__q" type="button" aria-expanded="false">
+            What pests do you treat?
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a" hidden>
+            We treat common pests including cockroaches, ants, spiders, rodents, bed bugs, fleas, bees/wasps and more. If you’re unsure, select “Other” in the quote form.
+          </div>
+
+          <button class="faq__q" type="button" aria-expanded="false">
+            Do you offer eco-friendly options?
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a" hidden>
+            Where suitable, we can use lower-toxicity treatments and an IPM-style approach focused on prevention and targeted control.
+          </div>
+
+          <button class="faq__q" type="button" aria-expanded="false">
+            How is pricing determined?
+            <span class="faq__icon" aria-hidden="true"></span>
+          </button>
+          <div class="faq__a" hidden>
+            Pricing depends on pest type, property size, access, severity, and required treatment method. Send a quick quote request and we’ll respond with next steps.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="section section--contact" id="contact">
+      <div class="container contact">
+        <div class="contact__left">
+          <h2>Get a quote</h2>
+          <p class="muted">Call or send a message. We’ll ask a couple of quick questions and recommend the next step.</p>
+
+          <div class="contact__cards">
+            <div class="info">
+              <span class="info__label">Phone</span>
+              <a class="info__value" href="tel:0403069615">0403 069 615</a>
+            </div>
+            <div class="info">
+              <span class="info__label">Email</span>
+              <a class="info__value" href="mailto:sydadvancedpestcontrol@gmail.com">sydadvancedpestcontrol@gmail.com</a>
+            </div>
+            <div class="info">
+              <span class="info__label">Service area</span>
+              <span class="info__value">Sydney & surrounding suburbs</span>
+            </div>
+          </div>
+
+          <p class="small muted">Lic. No. 5105787 • Established 2014</p>
+        </div>
+
+        <div class="contact__right">
+          <div class="panel">
+            <h3 class="panel__title">Send a message</h3>
+            <p class="panel__sub">This form can email you via a service (or be wired to your backend later).</p>
+
+            <form class="form" id="contactForm">
+              <label>
+                <span>Name</span>
+                <input name="name" type="text" autocomplete="name" required>
+              </label>
+              <label>
+                <span>Phone</span>
+                <input name="phone" type="tel" inputmode="tel" autocomplete="tel" required>
+              </label>
+              <label>
+                <span>Email</span>
+                <input name="email" type="email" autocomplete="email">
+              </label>
+              <label>
+                <span>Message</span>
+                <textarea name="message" rows="5" required></textarea>
+              </label>
+              <button class="btn btn--primary w-full" type="submit">Send</button>
+              <p class="form__note" id="contactNote" aria-live="polite"></p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__left">
+        <div class="footer__brand">Sydney Advanced Pest Control</div>
+        <div class="footer__meta">© <span id="year"></span> • Established 2014 • Lic. No. 5105787</div>
+      </div>
+      <div class="footer__right">
+        <a href="tel:0403069615">0403 069 615</a>
+        <a href="https://www.facebook.com/sydneyadvance.pest" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <span class="dot" aria-hidden="true"></span>
+        <a href="#contact">Get a Quote</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Mobile sticky CTA bar -->
+  <div class="mobilebar" role="region" aria-label="Quick actions">
+    <a class="mobilebar__btn mobilebar__btn--ghost" href="tel:0403069615">Call</a>
+    <a class="mobilebar__btn mobilebar__btn--primary" href="#contact">Quote</a>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
