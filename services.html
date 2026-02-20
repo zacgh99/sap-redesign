@@ -3,17 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Our Services - Sydney Advanced Pest Control</title>
+
+    <title>Pest Control Services Sydney | PestControlSYD</title>
+    <meta name="description" content="Premium pest control services across Sydney. Treatments for cockroaches, spiders, rats & mice, bees & wasps, ants, bed bugs, fleas, and millipedes. Call 0403 069 615." />
+    <meta name="robots" content="index, follow" />
+    <meta name="theme-color" content="#C41E3A" />
+
+    <link rel="canonical" href="https://pestcontrolsyd.com.au/services.html" />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Pest Control Services Sydney | PestControlSYD" />
+    <meta property="og:description" content="Premium pest control treatments across Sydney. Fast response, safe products, and long-lasting protection. Call 0403 069 615." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://pestcontrolsyd.com.au/services.html" />
+    <meta property="og:site_name" content="PestControlSYD" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Pest Control Services Sydney | PestControlSYD" />
+    <meta name="twitter:description" content="Premium pest control services across Sydney. Call 0403 069 615." />
+
     <link rel="stylesheet" href="styles.css">
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <!-- Service Schema (lightweight) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Pest Control Services",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "PestControlSYD",
+        "telephone": "+61403069615",
+        "email": "pestcontrolsyd1@gmail.com",
+        "areaServed": "Sydney NSW, Australia"
+      },
+      "areaServed": "Sydney NSW, Australia",
+      "serviceType": "Pest Control"
+    }
+    </script>
 </head>
 <body>
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu-overlay" id="mobileMenuOverlay">
-        <button class="close-menu" id="closeMenu">×</button>
-        <nav class="mobile-nav">
+        <button class="close-menu" id="closeMenu" aria-label="Close menu">×</button>
+        <nav class="mobile-nav" aria-label="Mobile navigation">
             <a href="index.html" class="mobile-nav-link">Home</a>
             <a href="services.html" class="mobile-nav-link active">Services</a>
             <a href="about.html" class="mobile-nav-link">About</a>
@@ -29,17 +67,17 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <a href="index.html">
-                        <span class="logo-main">SAPC</span>
-                        <span class="logo-sub">Sydney Advanced</span>
+                    <a href="index.html" aria-label="PestControlSYD home">
+                        <span class="logo-main">Pest Control</span>
+                        <span class="logo-sub">pestcontrolsyd</span>
                     </a>
                 </div>
-                <button class="menu-toggle" id="menuToggle">
+                <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-controls="mobileMenuOverlay" aria-expanded="false">
                     <span></span>
                     <span></span>
                     <span></span>
                 </button>
-                <nav class="desktop-nav">
+                <nav class="desktop-nav" aria-label="Primary navigation">
                     <a href="index.html" class="nav-link">Home</a>
                     <a href="services.html" class="nav-link active">Services</a>
                     <a href="about.html" class="nav-link">About</a>
@@ -55,7 +93,7 @@
             <div class="page-hero-content">
                 <span class="page-label">Our Services</span>
                 <h1 class="page-title">Complete Pest Control Solutions</h1>
-                <p class="page-subtitle">Expert treatment for every pest problem</p>
+                <p class="page-subtitle">Premium treatment for every pest problem</p>
             </div>
         </div>
     </section>
@@ -64,6 +102,7 @@
     <section class="services-detail-section">
         <div class="container">
             <div class="services-detail-grid">
+
                 <!-- Cockroaches -->
                 <div class="service-detail-card" data-animation="fade-up">
                     <div class="service-detail-icon">🦟</div>
@@ -191,6 +230,7 @@
                         <a href="contact.html" class="service-detail-link">Get Quote →</a>
                     </div>
                 </div>
+
             </div>
         </div>
     </section>
@@ -238,19 +278,19 @@
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" role="contentinfo">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-column">
                     <div class="footer-logo">
-                        <span class="logo-main">SAPC</span>
-                        <span class="logo-sub">Sydney Advanced Pest Control</span>
+                        <span class="logo-main">Pest Control</span>
+                        <span class="logo-sub">PestControlSYD</span>
                     </div>
                     <p class="footer-desc">Premium pest control solutions for residential and commercial properties across Sydney.</p>
                 </div>
                 <div class="footer-column">
                     <h4 class="footer-title">Quick Links</h4>
-                    <nav class="footer-nav">
+                    <nav class="footer-nav" aria-label="Footer navigation">
                         <a href="index.html">Home</a>
                         <a href="services.html">Services</a>
                         <a href="about.html">About</a>
@@ -262,13 +302,13 @@
                     <div class="footer-contact">
                         <p>Sydney, Australia</p>
                         <p><a href="tel:0403069615">0403 069 615</a></p>
-                        <p><a href="mailto:sydadvancedpestcontrol@gmail.com">sydadvancedpestcontrol@gmail.com</a></p>
+                        <p><a href="mailto:pestcontrolsyd1@gmail.com">pestcontrolsyd1@gmail.com</a></p>
                         <p class="license">Lic. No. 5105787</p>
                     </div>
                 </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2024 Sydney Advanced Pest Control. All rights reserved.</p>
+                <p>&copy; 2026 PestControlSYD. All rights reserved.</p>
             </div>
         </div>
     </footer>
