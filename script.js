@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
-            e.preventDefault();
+            e.preventDefault(); // prevent default form submission
 
             // Get form data
             const formData = {
@@ -139,31 +139,21 @@ document.addEventListener('DOMContentLoaded', function() {
                 message: document.getElementById('message').value
             };
 
-            // Here you would normally send this data to a server
+            // You could optionally log the data here for debugging
             console.log('Form submitted:', formData);
 
-            // Show success message
+            // Show success message (hide form)
             contactForm.style.display = 'none';
             formSuccess.style.display = 'block';
 
             // Scroll to success message
             formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-            // In a real implementation, you would send this to your backend:
-            // fetch('/api/contact', {
-            //     method: 'POST',
-            //     headers: { 'Content-Type': 'application/json' },
-            //     body: JSON.stringify(formData)
-            // })
-            // .then(response => response.json())
-            // .then(data => {
-            //     contactForm.style.display = 'none';
-            //     formSuccess.style.display = 'block';
-            // })
-            // .catch(error => {
-            //     console.error('Error:', error);
-            //     alert('Sorry, there was an error submitting your form. Please try again.');
-            // });
+            // Allow the normal form submission to FormSubmit
+            // FormSubmit will handle the actual email sending
+
+            // If you want to ensure the form submits after clicking submit button
+            contactForm.submit(); // Manually trigger the submit
         });
     }
 
