@@ -1,233 +1,249 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>About PestControlSYD | Premium Pest Control Sydney</title>
-    <meta name="description" content="Learn about PestControlSYD — premium pest control experts serving Sydney since 2012. Licensed, insured, eco-friendly pest treatments and same-day service." />
-    <meta name="robots" content="index, follow" />
-    <meta name="theme-color" content="#C41E3A" />
-
-    <link rel="canonical" href="https://pestcontrolsyd.com.au/about.html" />
-
-    <meta property="og:title" content="About PestControlSYD | Premium Pest Control Sydney" />
-    <meta property="og:description" content="Sydney's trusted pest control team since 2012. Licensed, insured, and eco-friendly treatments." />
-    <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://pestcontrolsyd.com.au/about.html" />
-    <meta property="og:site_name" content="PestControlSYD" />
-
-    <link rel="stylesheet" href="styles.css">
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About PestControlSYD | Premium Pest Control Sydney</title>
+  <meta name="description" content="Learn about PestControlSYD — premium pest control experts serving Sydney since 2012. Licensed, insured, eco-friendly pest treatments and same-day service.">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#C41E3A">
+  <link rel="canonical" href="https://pestcontrolsyd.com.au/about.html">
+  <meta property="og:title" content="About PestControlSYD | Premium Pest Control Sydney">
+  <meta property="og:description" content="Sydney's trusted pest control team since 2012. Licensed, insured, and eco-friendly treatments.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://pestcontrolsyd.com.au/about.html">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Crimson+Pro:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu-overlay" id="mobileMenuOverlay">
-        <button class="close-menu" id="closeMenu">×</button>
-        <nav class="mobile-nav" aria-label="Mobile navigation">
-            <a href="index.html" class="mobile-nav-link">Home</a>
-            <a href="services.html" class="mobile-nav-link">Services</a>
-            <a href="about.html" class="mobile-nav-link active">About</a>
-            <a href="contact.html" class="mobile-nav-link">Contact</a>
-        </nav>
-        <div class="mobile-menu-cta">
-            <a href="tel:0403069615" class="cta-button-alt">Call Now</a>
-        </div>
-    </div>
 
-    <!-- Header -->
-    <header class="header header-alt">
-        <div class="container">
-            <div class="header-content">
-<div class="logo">
-    <img src="assets/logo.png" class="logo-img" alt="PestControlSYD Logo" />
-    <a href="index.html">
-        <span class="logo-main">Pest Control</span>
-    </a>
+<!-- Custom Cursor -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- Mobile Menu Overlay -->
+<div class="mobile-menu-overlay" id="mobileMenuOverlay">
+  <button class="close-menu" id="closeMenu" aria-label="Close menu">×</button>
+  <nav class="mobile-nav" aria-label="Mobile navigation">
+    <a href="index.html" class="mobile-nav-link">Home</a>
+    <a href="services.html" class="mobile-nav-link">Services</a>
+    <a href="about.html" class="mobile-nav-link active">About</a>
+    <a href="contact.html" class="mobile-nav-link">Contact</a>
+  </nav>
+  <div class="mobile-menu-cta">
+    <a href="tel:0403069615" class="cta-button-alt">Call 0403 069 615</a>
+  </div>
 </div>
-                <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-controls="mobileMenuOverlay" aria-expanded="false">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-                <nav class="desktop-nav" aria-label="Primary navigation">
-                    <a href="index.html" class="nav-link">Home</a>
-                    <a href="services.html" class="nav-link">Services</a>
-                    <a href="about.html" class="nav-link active">About</a>
-                    <a href="contact.html" class="nav-link">Contact</a>
-                </nav>
-            </div>
-        </div>
-    </header>
 
-    <!-- Page Hero -->
-    <section class="page-hero">
-        <div class="container">
-            <div class="page-hero-content">
-                <span class="page-label">About Us</span>
-                <h1 class="page-title">12+ Years of Excellence</h1>
-                <p class="page-subtitle">Sydney's trusted pest control experts since 2012</p>
-            </div>
-        </div>
-    </section>
+<!-- Header -->
+<header class="header header-alt">
+  <div class="container">
+    <div class="header-content">
+      <div class="logo">
+        <a href="index.html" class="logo-link" aria-label="Pest Control SYD Home">
+          <span class="logo-mark">
+            <img src="assets/logo.png" class="logo-img" alt="PestControlSYD Logo" onerror="this.style.display='none'">
+          </span>
+      
+          <span class="logo-main">
+            Pest Control<span class="logo-accent"></span>
+          </span>
+        </a>
+      </div>
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu" aria-controls="mobileMenuOverlay" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="desktop-nav" aria-label="Primary navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="services.html" class="nav-link">Services</a>
+        <a href="about.html" class="nav-link active">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
+      </nav>
+    </div>
+  </div>
+</header>
 
-    <!-- About Story -->
-    <section class="about-story">
-        <div class="container">
-            <div class="about-content">
-                <div class="about-text" data-animation="fade-up">
-                    <h2 class="section-title">Premium Protection, Exceptional Service</h2>
-                    <p>PestControlSYD has been protecting homes and businesses across Sydney for over 12 years. What started as a commitment to safe, effective pest management has evolved into a reputation for excellence and reliability.</p>
-                    <p>We combine cutting-edge pest control technology with eco-friendly solutions, ensuring your property is protected without compromising the safety of your family, pets, or the environment.</p>
-                    <p>Our team of licensed professionals brings decades of combined experience, continuous training, and a genuine commitment to customer satisfaction. We don't just eliminate pests – we provide peace of mind.</p>
-                </div>
-                <div class="about-stats-grid">
-                    <div class="about-stat-card" data-animation="fade-up">
-                        <div class="about-stat-number">12+</div>
-                        <div class="about-stat-label">Years Experience</div>
-                    </div>
-                    <div class="about-stat-card" data-animation="fade-up">
-                        <div class="about-stat-number">5,000+</div>
-                        <div class="about-stat-label">Happy Clients</div>
-                    </div>
-                    <div class="about-stat-card" data-animation="fade-up">
-                        <div class="about-stat-number">5★</div>
-                        <div class="about-stat-label">Client Rating</div>
-                    </div>
-                    <div class="about-stat-card" data-animation="fade-up">
-                        <div class="about-stat-number">100%</div>
-                        <div class="about-stat-label">Satisfaction Rate</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-content">
+      <span class="page-label">About Us</span>
+      <h1 class="page-title">12+ Years of Excellence</h1>
+      <p class="page-subtitle">Sydney's trusted pest control experts since 2012</p>
+    </div>
+  </div>
+</section>
 
-    <!-- Our Approach -->
-    <section class="approach-section">
-        <div class="container">
-            <div class="section-header">
-                <span class="section-label">Our Approach</span>
-                <h2 class="section-title">Why We're Different</h2>
-            </div>
-            <div class="approach-grid">
-                <div class="approach-card" data-animation="fade-up">
-                    <div class="approach-icon">🌿</div>
-                    <h3 class="approach-title">Eco-Friendly Solutions</h3>
-                    <p class="approach-desc">We prioritize organic and plant-based pesticides derived from natural sources. Our treatments are effective against pests while being safer for your family, pets, and the environment.</p>
-                </div>
-                <div class="approach-card" data-animation="fade-up">
-                    <div class="approach-icon">🎯</div>
-                    <h3 class="approach-title">Integrated Pest Management</h3>
-                    <p class="approach-desc">Our IPM approach combines prevention, monitoring, and control techniques to manage pests effectively while minimizing environmental impact and maintaining ecological balance.</p>
-                </div>
-                <div class="approach-card" data-animation="fade-up">
-                    <div class="approach-icon">📋</div>
-                    <h3 class="approach-title">Licensed Professionals</h3>
-                    <p class="approach-desc">All our technicians are fully licensed (Lic. No. 5105787), insured, and continuously trained in the latest pest control methods and safety protocols.</p>
-                </div>
-                <div class="approach-card" data-animation="fade-up">
-                    <div class="approach-icon">⚡</div>
-                    <h3 class="approach-title">Rapid Response</h3>
-                    <p class="approach-desc">We understand pest emergencies can't wait. That's why we offer same-day service for urgent situations and flexible scheduling to fit your needs.</p>
-                </div>
-                <div class="approach-card" data-animation="fade-up">
-                    <div class="approach-icon">💰</div>
-                    <h3 class="approach-title">Transparent Pricing</h3>
-                    <p class="approach-desc">No hidden fees or surprise charges. We provide detailed quotes upfront and explain all treatment options clearly so you can make informed decisions.</p>
-                </div>
-                <div class="approach-card" data-animation="fade-up">
-                    <div class="approach-icon">✅</div>
-                    <h3 class="approach-title">Satisfaction Guaranteed</h3>
-                    <p class="approach-desc">We stand behind our work with comprehensive warranties. If pests return within the warranty period, so do we – at no additional cost.</p>
-                </div>
-            </div>
+<!-- About Story -->
+<section class="about-story">
+  <div class="container">
+    <div class="about-content">
+      <div class="about-text" data-animation="fade-right">
+        <h2 class="section-title">Premium Protection, Exceptional Service</h2>
+        <p>PestControlSYD has been protecting homes and businesses across Sydney for over 12 years. What started as a commitment to safe, effective pest management has evolved into a reputation for excellence and reliability.</p>
+        <p>We combine cutting-edge pest control technology with eco-friendly solutions, ensuring your property is protected without compromising the safety of your family, pets, or the environment.</p>
+        <p>Our team of licensed professionals brings decades of combined experience, continuous training, and a genuine commitment to customer satisfaction. We don't just eliminate pests — we provide peace of mind.</p>
+      </div>
+      <div class="about-stats-grid" data-animation="fade-left">
+        <div class="about-stat-card">
+          <div class="about-stat-number">12+</div>
+          <div class="about-stat-label">Years Experience</div>
         </div>
-    </section>
-
-    <!-- Certifications -->
-    <section class="certifications-section">
-        <div class="container">
-            <div class="certifications-content">
-                <div class="certifications-text" data-animation="fade-up">
-                    <span class="section-label">Credentials</span>
-                    <h2 class="section-title">Licensed & Insured</h2>
-                    <p>PestControlSYD operates with full licensing and comprehensive insurance coverage. Our credentials include:</p>
-                    <ul class="credentials-list">
-                        <li>NSW Pest Control License No. 5105787</li>
-                        <li>Public Liability Insurance Coverage</li>
-                        <li>Professional Indemnity Insurance</li>
-                        <li>WorkCover NSW Compliance</li>
-                        <li>Certified in Chemical Application</li>
-                        <li>Environmental Protection Standards</li>
-                    </ul>
-                </div>
-                <div class="certifications-image" data-animation="fade-left">
-                    <div class="cert-badge">
-                        <div class="cert-badge-inner">
-                            <div class="cert-icon">✓</div>
-                            <div class="cert-text">Licensed</div>
-                            <div class="cert-number">5105787</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="about-stat-card">
+          <div class="about-stat-number">5,000+</div>
+          <div class="about-stat-label">Happy Clients</div>
         </div>
-    </section>
-
-    <!-- CTA Section -->
-    <section class="cta-section">
-        <div class="container">
-            <div class="cta-content">
-                <h2 class="cta-title">Experience the PestControlSYD Difference</h2>
-                <p class="cta-text">Let our experienced team protect your property today</p>
-                <div class="cta-buttons">
-                    <a href="contact.html" class="cta-button">Get Free Quote</a>
-                    <a href="tel:0403069615" class="cta-button-alt">Call 0403 069 615</a>
-                </div>
-            </div>
+        <div class="about-stat-card">
+          <div class="about-stat-number">5★</div>
+          <div class="about-stat-label">Client Rating</div>
         </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer" role="contentinfo">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-column">
-                    <div class="footer-logo">
-                        <span class="logo-main">Pest Control</span>
-                        <span class="logo-sub">PestControlSYD</span>
-                    </div>
-                    <p class="footer-desc">Premium pest control solutions for residential and commercial properties across Sydney.</p>
-                </div>
-                <div class="footer-column">
-                    <h4 class="footer-title">Quick Links</h4>
-                    <nav class="footer-nav" aria-label="Footer navigation">
-                        <a href="index.html">Home</a>
-                        <a href="services.html">Services</a>
-                        <a href="about.html">About</a>
-                        <a href="contact.html">Contact</a>
-                    </nav>
-                </div>
-                <div class="footer-column">
-                    <h4 class="footer-title">Contact</h4>
-                    <div class="footer-contact">
-                        <p>Sydney, Australia</p>
-                        <p><a href="tel:0403069615">0403 069 615</a></p>
-                        <p><a href="mailto:pestcontrolsyd1@gmail.com">pestcontrolsyd1@gmail.com</a></p>
-                        <p class="license">Lic. No. 5105787</p>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 PestControlSYD. All rights reserved.</p>
-            </div>
+        <div class="about-stat-card">
+          <div class="about-stat-number">100%</div>
+          <div class="about-stat-label">Satisfaction Rate</div>
         </div>
-    </footer>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <script src="script.js"></script>
+<!-- Our Approach -->
+<section class="approach-section">
+  <div class="container">
+    <div class="section-header" data-animation="fade-up">
+      <span class="section-label">Our Approach</span>
+      <h2 class="section-title">Why We're Different</h2>
+    </div>
+    <div class="approach-grid">
+      <div class="approach-card" data-animation="fade-up">
+        <span class="approach-icon">🌿</span>
+        <h3 class="approach-title">Eco-Friendly Solutions</h3>
+        <p class="approach-desc">We prioritize organic and plant-based pesticides derived from natural sources. Our treatments are effective against pests while being safer for your family, pets, and the environment.</p>
+      </div>
+      <div class="approach-card" data-animation="fade-up">
+        <span class="approach-icon">🎯</span>
+        <h3 class="approach-title">Integrated Pest Management</h3>
+        <p class="approach-desc">Our IPM approach combines prevention, monitoring, and control techniques to manage pests effectively while minimizing environmental impact and maintaining ecological balance.</p>
+      </div>
+      <div class="approach-card" data-animation="fade-up">
+        <span class="approach-icon">📋</span>
+        <h3 class="approach-title">Licensed Professionals</h3>
+        <p class="approach-desc">All our technicians are fully licensed (Lic. No. 5105787), insured, and continuously trained in the latest pest control methods and safety protocols.</p>
+      </div>
+      <div class="approach-card" data-animation="fade-up">
+        <span class="approach-icon">⚡</span>
+        <h3 class="approach-title">Rapid Response</h3>
+        <p class="approach-desc">We understand pest emergencies can't wait. That's why we offer same-day service for urgent situations and flexible scheduling to fit your needs.</p>
+      </div>
+      <div class="approach-card" data-animation="fade-up">
+        <span class="approach-icon">💰</span>
+        <h3 class="approach-title">Transparent Pricing</h3>
+        <p class="approach-desc">No hidden fees or surprise charges. We provide detailed quotes upfront and explain all treatment options clearly so you can make informed decisions.</p>
+      </div>
+      <div class="approach-card" data-animation="fade-up">
+        <span class="approach-icon">✅</span>
+        <h3 class="approach-title">Satisfaction Guaranteed</h3>
+        <p class="approach-desc">We stand behind our work with comprehensive warranties. If pests return within the warranty period, so do we — at no additional cost.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Certifications -->
+<section class="certifications-section">
+  <div class="container">
+    <div class="certifications-content">
+      <div class="certifications-text" data-animation="fade-right">
+        <span class="section-label">Credentials</span>
+        <h2 class="section-title">Licensed &amp; Insured</h2>
+        <p>PestControlSYD operates with full licensing and comprehensive insurance coverage. Our credentials include:</p>
+        <ul class="credentials-list">
+          <li>NSW Pest Control License No. 5105787</li>
+          <li>Public Liability Insurance Coverage</li>
+          <li>Professional Indemnity Insurance</li>
+          <li>WorkCover NSW Compliance</li>
+          <li>Certified in Chemical Application</li>
+          <li>Environmental Protection Standards</li>
+        </ul>
+      </div>
+      <div class="certifications-image" data-animation="fade-left">
+        <div class="cert-badge">
+          <div class="cert-badge-inner">
+            <div class="cert-icon">✓</div>
+            <div class="cert-text">Licensed</div>
+            <div class="cert-number">5105787</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+  <div class="container">
+    <div class="cta-content" data-animation="fade-up">
+      <h2 class="cta-title">Experience the PestControlSYD Difference</h2>
+      <p class="cta-text">Let our experienced team protect your property today.</p>
+      <div class="cta-buttons">
+        <a href="contact.html" class="cta-button">Get Free Quote</a>
+        <a href="tel:0403069615" class="cta-button-alt">Call 0403 069 615</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-column">
+        <div class="footer-logo">
+          <span class="logo-main">Pest Control<span style="color:var(--crimson)">SYD</span></span>
+        </div>
+        <p class="footer-desc">Premium pest control solutions for residential and commercial properties across Sydney.</p>
+      </div>
+      <div class="footer-column">
+        <h4 class="footer-title">Quick Links</h4>
+        <nav class="footer-nav" aria-label="Footer navigation">
+          <a href="index.html">Home</a>
+          <a href="services.html">Services</a>
+          <a href="about.html">About</a>
+          <a href="contact.html">Contact</a>
+        </nav>
+      </div>
+      <div class="footer-column">
+        <h4 class="footer-title">Contact</h4>
+        <div class="footer-contact">
+          <p>Sydney, Australia</p>
+          <p><a href="tel:0403069615">0403 069 615</a></p>
+          <p><a href="mailto:pestcontrolsyd1@gmail.com">pestcontrolsyd1@gmail.com</a></p>
+          <p class="license">Lic. No. 5105787</p>
+          <div class="header-socials" aria-label="Social links">
+            <a class="social-link" href="https://www.facebook.com/sydneyadvance.pest" target="_blank" rel="noopener" aria-label="Facebook">
+              <!-- Facebook icon -->
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M22 12a10 10 0 1 0-11.6 9.9v-7H8v-2.9h2.4V9.8c0-2.4 1.4-3.7 3.6-3.7 1 0 2 .2 2 .2v2.2h-1.1c-1.1 0-1.5.7-1.5 1.4v1.7H16l-.4 2.9h-2.2v7A10 10 0 0 0 22 12z"/>
+              </svg>
+            </a>
+          
+            <a class="social-link" href="https://www.tiktok.com/@jimmypesty" target="_blank" rel="noopener" aria-label="TikTok">
+              <!-- TikTok icon -->
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M16.7 3c.6 2.3 2.1 3.8 4.3 4.2v3.2c-1.7.1-3.2-.4-4.6-1.3v6.7c0 3.7-3 6.7-6.7 6.7S3 19.2 3 15.5 6 8.8 9.7 8.8c.4 0 .9 0 1.3.1v3.4c-.4-.1-.8-.2-1.3-.2-1.9 0-3.4 1.5-3.4 3.4S7.8 19 9.7 19s3.4-1.5 3.4-3.4V3h3.6z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>&copy; 2026 PestControlSYD. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
