@@ -1,636 +1,1026 @@
-// ============================================
-// PESTCONTROLSYD — REMASTERED INTERACTIONS
-// Spider + Canvas Web + 3D Scroll + All Original Logic
-// ============================================
+const $ = (selector, scope = document) => scope.querySelector(selector);
+const $$ = (selector, scope = document) => Array.from(scope.querySelectorAll(selector));
 
-document.addEventListener('DOMContentLoaded', function () {
+const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+const lerp = (start, end, amount) => start + (end - start) * amount;
 
-  // ============================================
-  // CUSTOM CURSOR
-  // ============================================
-  const cursor = document.getElementById('cursor');
-  const cursorRing = document.getElementById('cursorRing');
+function debounce(fn, wait = 150) {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => fn(...args), wait);
+  };
+}
 
-  if (cursor && cursorRing) {
-    let mx = -100, my = -100;
-    let rx = -100, ry = -100;
+document.addEventListener("DOMContentLoaded", () => {
+  const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const hasFinePointer = window.matchMedia("(pointer: fine)").matches;
 
-    document.addEventListener('mousemove', e => {
-      mx = e.clientX; my = e.clientY;
-      cursor.style.left = mx + 'px';
-      cursor.style.top  = my + 'px';
-    });
+  initCustomCursor({ hasFinePointer });
+  initMobileMenu({ prefersReducedMotion });
+  initHeaderScroll();
+  initHeroCanvas({ prefersReducedMotion });
+  initWebNavigation({ prefersReducedMotion });
+  initScrollAnimations({ prefersReducedMotion });
+  initHeroParallax({ prefersReducedMotion });
+  initHelpChooser({ prefersReducedMotion });
+  initContactPrefill();
+  initServiceCardTilt({ prefersReducedMotion, hasFinePointer });
+  initFAQ();
+  initContactForm();
+  initReviewForm();
+  initFieldValidation();
+  initStaggerDelays();
+  initSmoothAnchors({ prefersReducedMotion });
+  initLazyImages();
+  initPhoneTracking();
+  initReviewsCarousel();
+  initQuerySuccessStates({ prefersReducedMotion });
+  initConsoleBrand();
+});
 
-    const lerpRing = () => {
-      rx += (mx - rx) * 0.1;
-      ry += (my - ry) * 0.1;
-      cursorRing.style.left = rx + 'px';
-      cursorRing.style.top  = ry + 'px';
-      requestAnimationFrame(lerpRing);
-    };
-    lerpRing();
+// ======================================================
+// CUSTOM CURSOR
+// ======================================================
+function initCustomCursor({ hasFinePointer }) {
+  const cursor = $("#cursor");
+  const cursorRing = $("#cursorRing");
 
-    const hoverEls = document.querySelectorAll('a, button, [data-hover]');
-    hoverEls.forEach(el => {
-      el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
-      el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
-    });
+  if (!cursor || !cursorRing || !hasFinePointer) {
+    document.body.classList.remove("cursor-hover");
+    return;
   }
 
-  // ============================================
-  // MOBILE MENU
-  // ============================================
-  const menuToggle = document.getElementById('menuToggle');
-  const mobileMenuOverlay = document.getElementById('mobileMenuOverlay');
-  const closeMenu = document.getElementById('closeMenu');
+  let mouseX = window.innerWidth / 2;
+  let mouseY = window.innerHeight / 2;
+  let ringX = mouseX;
+  let ringY = mouseY;
 
-  if (menuToggle && mobileMenuOverlay) {
-    menuToggle.addEventListener('click', () => {
-      mobileMenuOverlay.classList.add('active');
-      menuToggle.classList.add('open');
-      document.body.style.overflow = 'hidden';
-    });
+  document.addEventListener("mousemove", (event) => {
+    mouseX = event.clientX;
+    mouseY = event.clientY;
 
-    const closeMobile = () => {
-      mobileMenuOverlay.classList.remove('active');
-      menuToggle.classList.remove('open');
-      document.body.style.overflow = '';
-    };
+    cursor.style.left = `${mouseX}px`;
+    cursor.style.top = `${mouseY}px`;
+    cursor.style.opacity = "1";
+    cursorRing.style.opacity = "1";
+  });
 
-    if (closeMenu) closeMenu.addEventListener('click', closeMobile);
+  document.addEventListener("mouseleave", () => {
+    cursor.style.opacity = "0";
+    cursorRing.style.opacity = "0";
+    document.body.classList.remove("cursor-hover");
+  });
 
-    document.querySelectorAll('.mobile-nav-link').forEach(link => {
-      link.addEventListener('click', closeMobile);
-    });
+  document.addEventListener("mouseenter", () => {
+    cursor.style.opacity = "1";
+    cursorRing.style.opacity = "1";
+  });
 
-    mobileMenuOverlay.addEventListener('click', e => {
-      if (e.target === mobileMenuOverlay) closeMobile();
-    });
-  }
+  document.addEventListener("mouseover", (event) => {
+    const hoverTarget = event.target.closest(
+      'a, button, [data-hover], input, select, textarea, label, .help-card, .service-card'
+    );
+    document.body.classList.toggle("cursor-hover", Boolean(hoverTarget));
+  });
 
-  // ============================================
-  // HEADER SCROLL EFFECT
-  // ============================================
-  const header = document.querySelector('.header');
-  if (header && !header.classList.contains('header-alt')) {
-    window.addEventListener('scroll', () => {
-      header.classList.toggle('scrolled', window.scrollY > 80);
-    });
-  }
-
-  // ============================================
-  // CANVAS SPIDER WEB HERO
-  // ============================================
-  const canvas = document.getElementById('heroCanvas');
-  if (canvas) {
-    const ctx = canvas.getContext('2d');
-    let W, H, mouse = { x: -1000, y: -1000 };
-    let lines = [], time = 0;
-
-    const resize = () => {
-      W = canvas.width  = canvas.offsetWidth;
-      H = canvas.height = canvas.offsetHeight;
-      buildWeb();
-    };
-
-    const buildWeb = () => {
-      lines = [];
-      const cx = W * 0.72, cy = H * 0.44;
-      const rings = 9, spokes = 18;
-      const maxR = Math.min(W, H) * 0.48;
-
-      // Spokes
-      for (let s = 0; s < spokes; s++) {
-        const angle = (s / spokes) * Math.PI * 2;
-        lines.push({
-          type: 'spoke',
-          x1: cx, y1: cy,
-          x2: cx + Math.cos(angle) * maxR,
-          y2: cy + Math.sin(angle) * maxR,
-          phase: s * 0.3
-        });
-      }
-
-      // Ring strands (catenary-ish)
-      for (let r = 1; r <= rings; r++) {
-        const rad = (r / rings) * maxR;
-        for (let s = 0; s < spokes; s++) {
-          const a1 = (s / spokes) * Math.PI * 2;
-          const a2 = ((s + 1) / spokes) * Math.PI * 2;
-          lines.push({
-            type: 'ring',
-            x1: cx + Math.cos(a1) * rad,
-            y1: cy + Math.sin(a1) * rad,
-            x2: cx + Math.cos(a2) * rad,
-            y2: cy + Math.sin(a2) * rad,
-            phase: r * 0.5 + s * 0.1,
-            ring: r
-          });
-        }
-      }
-    };
-
-    const drawWeb = () => {
-      ctx.clearRect(0, 0, W, H);
-      time += 0.008;
-
-      lines.forEach(l => {
-        const mx = (l.x1 + l.x2) / 2;
-        const my = (l.y1 + l.y2) / 2;
-        const dx = mouse.x - mx;
-        const dy = mouse.y - my;
-        const dist = Math.sqrt(dx*dx + dy*dy);
-        const maxDist = 180;
-        const distFactor = Math.max(0, 1 - dist / maxDist);
-        const sway = Math.sin(time + l.phase) * 0.7;
-        const warp = distFactor * 12;
-
-        const alpha = l.type === 'spoke'
-          ? 0.08 + Math.sin(time * 0.4 + l.phase) * 0.02
-          : (0.04 + (l.ring / 9) * 0.04 + Math.sin(time * 0.5 + l.phase) * 0.015);
-
-        ctx.beginPath();
-        ctx.moveTo(l.x1 + sway * 0.5, l.y1 + sway * 0.5);
-
-        if (l.type === 'ring') {
-          const cpx = mx + (mouse.x - mx) * distFactor * 0.15 + sway;
-          const cpy = my + (mouse.y - my) * distFactor * 0.15 + sway * 0.5;
-          ctx.quadraticCurveTo(cpx, cpy, l.x2 + sway * 0.3, l.y2 + sway * 0.3);
-        } else {
-          ctx.lineTo(l.x2, l.y2);
-        }
-
-        const grad = ctx.createLinearGradient(l.x1, l.y1, l.x2, l.y2);
-        grad.addColorStop(0, `rgba(240,232,210,${alpha * (1 + distFactor * 0.8)})`);
-        grad.addColorStop(0.5, `rgba(196,30,58,${alpha * 0.4 + distFactor * 0.12})`);
-        grad.addColorStop(1, `rgba(240,232,210,${alpha * (1 + distFactor * 0.8)})`);
-
-        ctx.strokeStyle = grad;
-        ctx.lineWidth = l.type === 'spoke' ? 0.6 : 0.5;
-        ctx.stroke();
-      });
-
-      requestAnimationFrame(drawWeb);
-    };
-
-    window.addEventListener('mousemove', e => {
-      const rect = canvas.getBoundingClientRect();
-      mouse.x = e.clientX - rect.left;
-      mouse.y = e.clientY - rect.top;
-    });
-
-    window.addEventListener('resize', resize);
-    resize();
-    drawWeb();
-  }
-
-  // ============================================
-  // SPIDER WEB NAVIGATION
-  // ============================================
-  const nav = document.querySelector('.web-nav');
-  const spider = document.getElementById('webSpider');
-  const nodes = Array.from(document.querySelectorAll('.web-node'));
-
-  if (nav && spider && nodes.length > 0) {
-    const items = nodes
-      .map(node => {
-        const sel = node.getAttribute('data-target');
-        const el = sel ? document.querySelector(sel) : null;
-        return el ? { node, el } : null;
-      })
-      .filter(Boolean);
-
-    if (items.length > 0) {
-      // Smooth scroll on click
-      items.forEach(({ node, el }) => {
-        node.addEventListener('click', e => {
-          e.preventDefault();
-          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        });
-      });
-
-      // Layout nodes
-      const layoutNodes = () => {
-        const h = nav.clientHeight;
-        const pad = 16;
-        const usable = Math.max(1, h - pad * 2);
-        items.forEach(({ node }, i) => {
-          const t = items.length === 1 ? 0.5 : i / (items.length - 1);
-          node.style.top = pad + usable * t + 'px';
-        });
-      };
-
-      // Active section tracking
-      let activeIndex = 0;
-      const setActive = idx => {
-        activeIndex = idx;
-        items.forEach((it, i) => it.node.classList.toggle('is-active', i === idx));
-      };
-
-      const io = new IntersectionObserver(entries => {
-        const visible = entries
-          .filter(e => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-        if (!visible) return;
-        const idx = items.findIndex(it => it.el === visible.target);
-        if (idx !== -1 && idx !== activeIndex) setActive(idx);
-      }, { threshold: [0.25, 0.5, 0.75] });
-
-      items.forEach(({ el }) => io.observe(el));
-
-      // Spider lerp motion
-      let currentY = 0;
-      const spiderMax = () => Math.max(0, nav.clientHeight - 40);
-      const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
-
-      const tick = () => {
-        const doc = document.documentElement;
-        const scrollTop = window.scrollY || doc.scrollTop;
-        const scrollMax = Math.max(1, doc.scrollHeight - window.innerHeight);
-        const p = clamp(scrollTop / scrollMax, 0, 1);
-        const targetY = p * spiderMax();
-        currentY += (targetY - currentY) * 0.12;
-
-        const sway = Math.sin(Date.now() * 0.001) * 4;
-
-        // Move the container (always) for Y tracking
-        spider.style.transform = `translateX(-50%) translateY(${currentY}px) rotate(180deg)`;
-        
-        // Sway ONLY the inner element so we never overwrite container transform
-        const spiderInner =
-          spider.querySelector('.spider-svg') ||
-          spider.querySelector('.spider-body') ||
-          spider.querySelector('.spider-glow');
-        
-        if (spiderInner) spiderInner.style.transform = `translateX(${sway}px)`;
-        requestAnimationFrame(tick);
-      };
-
-      layoutNodes();
-      window.addEventListener('resize', layoutNodes);
-      setActive(0);
-      requestAnimationFrame(tick);
+  document.addEventListener("mouseout", (event) => {
+    if (!event.relatedTarget) {
+      document.body.classList.remove("cursor-hover");
     }
+  });
+
+  const animateRing = () => {
+    ringX = lerp(ringX, mouseX, 0.14);
+    ringY = lerp(ringY, mouseY, 0.14);
+
+    cursorRing.style.left = `${ringX}px`;
+    cursorRing.style.top = `${ringY}px`;
+
+    requestAnimationFrame(animateRing);
+  };
+
+  animateRing();
+}
+
+// ======================================================
+// MOBILE MENU
+// ======================================================
+function initMobileMenu({ prefersReducedMotion }) {
+  const menuToggle = $("#menuToggle");
+  const mobileMenuOverlay = $("#mobileMenuOverlay");
+  const closeMenu = $("#closeMenu");
+  const mobileLinks = $$(".mobile-nav-link");
+
+  if (!menuToggle || !mobileMenuOverlay) return;
+
+  const openMenu = () => {
+    mobileMenuOverlay.classList.add("active");
+    menuToggle.classList.add("open");
+    menuToggle.setAttribute("aria-expanded", "true");
+    document.body.style.overflow = "hidden";
+
+    if (!prefersReducedMotion) {
+      const firstLink = mobileLinks[0];
+      if (firstLink) firstLink.focus();
+    }
+  };
+
+  const closeMobileMenu = () => {
+    mobileMenuOverlay.classList.remove("active");
+    menuToggle.classList.remove("open");
+    menuToggle.setAttribute("aria-expanded", "false");
+    document.body.style.overflow = "";
+  };
+
+  menuToggle.addEventListener("click", () => {
+    const isOpen = mobileMenuOverlay.classList.contains("active");
+    if (isOpen) {
+      closeMobileMenu();
+    } else {
+      openMenu();
+    }
+  });
+
+  if (closeMenu) {
+    closeMenu.addEventListener("click", closeMobileMenu);
   }
 
-  // ============================================
-  // SCROLL ANIMATIONS (3D)
-  // ============================================
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('animated');
+  mobileLinks.forEach((link) => {
+    link.addEventListener("click", closeMobileMenu);
+  });
+
+  mobileMenuOverlay.addEventListener("click", (event) => {
+    if (event.target === mobileMenuOverlay) {
+      closeMobileMenu();
+    }
+  });
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && mobileMenuOverlay.classList.contains("active")) {
+      closeMobileMenu();
+    }
+  });
+}
+
+// ======================================================
+// HEADER SCROLL EFFECT
+// ======================================================
+function initHeaderScroll() {
+  const header = $(".header");
+  if (!header) return;
+
+  const updateHeader = () => {
+    if (header.classList.contains("header-alt")) return;
+    header.classList.toggle("scrolled", window.scrollY > 60);
+  };
+
+  updateHeader();
+  window.addEventListener("scroll", updateHeader, { passive: true });
+}
+
+// ======================================================
+// HERO CANVAS WEB
+// ======================================================
+function initHeroCanvas({ prefersReducedMotion }) {
+  const canvas = $("#heroCanvas");
+  if (!canvas) return;
+
+  const ctx = canvas.getContext("2d");
+  if (!ctx) return;
+
+  let width = 0;
+  let height = 0;
+  let lines = [];
+  let time = 0;
+  let animationId = null;
+
+  const mouse = {
+    x: -1000,
+    y: -1000,
+  };
+
+  const resize = () => {
+    const rect = canvas.getBoundingClientRect();
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    width = rect.width;
+    height = rect.height;
+
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
+
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    buildWeb();
+    drawFrame();
+  };
+
+  const buildWeb = () => {
+    lines = [];
+
+    const centerX = width * 0.73;
+    const centerY = height * 0.44;
+    const rings = 9;
+    const spokes = 18;
+    const maxRadius = Math.min(width, height) * 0.46;
+
+    for (let spoke = 0; spoke < spokes; spoke += 1) {
+      const angle = (spoke / spokes) * Math.PI * 2;
+
+      lines.push({
+        type: "spoke",
+        x1: centerX,
+        y1: centerY,
+        x2: centerX + Math.cos(angle) * maxRadius,
+        y2: centerY + Math.sin(angle) * maxRadius,
+        phase: spoke * 0.3,
+      });
+    }
+
+    for (let ring = 1; ring <= rings; ring += 1) {
+      const radius = (ring / rings) * maxRadius;
+
+      for (let spoke = 0; spoke < spokes; spoke += 1) {
+        const angle1 = (spoke / spokes) * Math.PI * 2;
+        const angle2 = ((spoke + 1) / spokes) * Math.PI * 2;
+
+        lines.push({
+          type: "ring",
+          x1: centerX + Math.cos(angle1) * radius,
+          y1: centerY + Math.sin(angle1) * radius,
+          x2: centerX + Math.cos(angle2) * radius,
+          y2: centerY + Math.sin(angle2) * radius,
+          phase: ring * 0.45 + spoke * 0.12,
+          ring,
+        });
       }
-    });
-  }, { rootMargin: '0px', threshold: 0.1 });
+    }
+  };
 
-  document.querySelectorAll('[data-animation]').forEach(el => observer.observe(el));
+  const drawFrame = () => {
+    ctx.clearRect(0, 0, width, height);
 
-  // Process card side-line reveal
-  const processObs = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) entry.target.classList.add('animated');
-    });
-  }, { threshold: 0.3 });
-  document.querySelectorAll('.process-card').forEach(el => processObs.observe(el));
+    if (!prefersReducedMotion) {
+      time += 0.008;
+    }
 
-  // ============================================
-  // PARALLAX HERO
-  // ============================================
-  const heroBg = document.querySelector('.hero-background');
-  if (heroBg) {
-    window.addEventListener('scroll', () => {
-      const scrolled = window.scrollY;
-      if (scrolled < window.innerHeight * 1.5) {
-        heroBg.style.transform = `translateY(${scrolled * 0.3}px)`;
+    lines.forEach((line) => {
+      const midX = (line.x1 + line.x2) / 2;
+      const midY = (line.y1 + line.y2) / 2;
+      const deltaX = mouse.x - midX;
+      const deltaY = mouse.y - midY;
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      const distanceFactor = clamp(1 - distance / 180, 0, 1);
+
+      const sway = prefersReducedMotion ? 0 : Math.sin(time + line.phase) * 0.7;
+      const alpha =
+        line.type === "spoke"
+          ? 0.08 + (prefersReducedMotion ? 0 : Math.sin(time * 0.4 + line.phase) * 0.02)
+          : 0.04 +
+            (line.ring / 9) * 0.04 +
+            (prefersReducedMotion ? 0 : Math.sin(time * 0.5 + line.phase) * 0.015);
+
+      ctx.beginPath();
+      ctx.moveTo(line.x1 + sway * 0.5, line.y1 + sway * 0.5);
+
+      if (line.type === "ring") {
+        const controlX = midX + (mouse.x - midX) * distanceFactor * 0.15 + sway;
+        const controlY = midY + (mouse.y - midY) * distanceFactor * 0.15 + sway * 0.5;
+        ctx.quadraticCurveTo(controlX, controlY, line.x2 + sway * 0.3, line.y2 + sway * 0.3);
+      } else {
+        ctx.lineTo(line.x2, line.y2);
       }
-    }, { passive: true });
+
+      const gradient = ctx.createLinearGradient(line.x1, line.y1, line.x2, line.y2);
+      gradient.addColorStop(0, `rgba(245, 239, 231, ${alpha * (1 + distanceFactor * 0.7)})`);
+      gradient.addColorStop(0.5, `rgba(201, 168, 99, ${alpha * 0.18 + distanceFactor * 0.10})`);
+      gradient.addColorStop(1, `rgba(245, 239, 231, ${alpha * (1 + distanceFactor * 0.7)})`);
+
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = line.type === "spoke" ? 0.65 : 0.5;
+      ctx.stroke();
+    });
+
+    if (!prefersReducedMotion) {
+      animationId = requestAnimationFrame(drawFrame);
+    }
+  };
+
+  window.addEventListener("mousemove", (event) => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = event.clientX - rect.left;
+    mouse.y = event.clientY - rect.top;
+  });
+
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      resize();
+    }, 120)
+  );
+
+  resize();
+
+  if (!prefersReducedMotion) {
+    drawFrame();
   }
-// ============================================
-// HELP ME CHOOSE (Index only) — fixed + customer-focused
-// Adds: selected state, keeps highlight span, supports name labels
-// ============================================
-(() => {
-  const cards  = document.querySelectorAll('.help-card');
-  const result = document.getElementById('helpResult');
-  const title  = document.getElementById('helpResultTitle');
-  const text   = document.getElementById('helpResultText');
-  const quote  = document.getElementById('helpQuoteBtn');
+
+  window.addEventListener("beforeunload", () => {
+    if (animationId) cancelAnimationFrame(animationId);
+  });
+}
+
+// ======================================================
+// SPIDER WEB NAVIGATION
+// ======================================================
+function initWebNavigation({ prefersReducedMotion }) {
+  const nav = $(".web-nav");
+  const spider = $("#webSpider");
+  const nodes = $$(".web-node");
+
+  if (!nav || !spider || !nodes.length) return;
+
+  const items = nodes
+    .map((node) => {
+      const targetSelector = node.getAttribute("data-target");
+      const element = targetSelector ? $(targetSelector) : null;
+      return element ? { node, element } : null;
+    })
+    .filter(Boolean);
+
+  if (!items.length) return;
+
+  let activeIndex = 0;
+  let spiderY = 0;
+
+  const spiderInner = $(".spider-svg", spider);
+
+  const layoutNodes = () => {
+    const height = nav.clientHeight;
+    const padding = 16;
+    const usableHeight = Math.max(height - padding * 2, 1);
+
+    items.forEach((item, index) => {
+      const ratio = items.length === 1 ? 0.5 : index / (items.length - 1);
+      item.node.style.top = `${padding + usableHeight * ratio}px`;
+    });
+
+    moveSpiderTo(activeIndex, true);
+  };
+
+  const moveSpiderTo = (index, immediate = false) => {
+    const targetNode = items[index]?.node;
+    if (!targetNode) return;
+
+    const targetY = targetNode.offsetTop;
+
+    if (immediate || prefersReducedMotion) {
+      spiderY = targetY;
+    } else {
+      spiderY = lerp(spiderY, targetY, 0.12);
+    }
+
+    spider.style.transform = `translate(-50%, ${spiderY}px)`;
+
+    if (spiderInner && !prefersReducedMotion) {
+      const sway = Math.sin(Date.now() * 0.002) * 2.5;
+      spiderInner.style.transform = `translateX(${sway}px)`;
+    }
+  };
+
+  const setActive = (index) => {
+    activeIndex = index;
+    items.forEach((item, itemIndex) => {
+      item.node.classList.toggle("is-active", itemIndex === index);
+    });
+  };
+
+  items.forEach((item, index) => {
+    item.node.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      item.element.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "start",
+      });
+
+      setActive(index);
+    });
+  });
+
+  const sectionObserver = new IntersectionObserver(
+    (entries) => {
+      const visibleEntry = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+      if (!visibleEntry) return;
+
+      const index = items.findIndex((item) => item.element === visibleEntry.target);
+      if (index !== -1) {
+        setActive(index);
+      }
+    },
+    {
+      threshold: [0.2, 0.45, 0.7],
+    }
+  );
+
+  items.forEach((item) => sectionObserver.observe(item.element));
+
+  layoutNodes();
+  setActive(0);
+
+  window.addEventListener("resize", debounce(layoutNodes, 120));
+
+  if (!prefersReducedMotion) {
+    const tick = () => {
+      moveSpiderTo(activeIndex);
+      requestAnimationFrame(tick);
+    };
+    tick();
+  } else {
+    moveSpiderTo(0, true);
+  }
+}
+
+// ======================================================
+// SCROLL ANIMATIONS
+// ======================================================
+function initScrollAnimations({ prefersReducedMotion }) {
+  const animatedElements = $$("[data-animation]");
+  const processCards = $$(".process-card");
+
+  if (prefersReducedMotion) {
+    animatedElements.forEach((element) => element.classList.add("animated"));
+    processCards.forEach((card) => card.classList.add("animated"));
+    return;
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("animated");
+        }
+      });
+    },
+    {
+      threshold: 0.12,
+      rootMargin: "0px 0px -40px 0px",
+    }
+  );
+
+  animatedElements.forEach((element) => observer.observe(element));
+  processCards.forEach((card) => observer.observe(card));
+}
+
+// ======================================================
+// HERO PARALLAX
+// ======================================================
+function initHeroParallax({ prefersReducedMotion }) {
+  const heroGradient = $(".hero-bg-gradient");
+  if (!heroGradient || prefersReducedMotion) return;
+
+  const updateParallax = () => {
+    const offset = Math.min(window.scrollY * 0.16, 120);
+    heroGradient.style.transform = `translateY(${offset}px)`;
+  };
+
+  updateParallax();
+  window.addEventListener("scroll", updateParallax, { passive: true });
+}
+
+// ======================================================
+// HELP ME CHOOSE
+// ======================================================
+function initHelpChooser({ prefersReducedMotion }) {
+  const cards = $$(".help-card");
+  const result = $("#helpResult");
+  const title = $("#helpResultTitle");
+  const text = $("#helpResultText");
+  const quoteButton = $("#helpQuoteBtn");
 
   if (!cards.length || !result || !title || !text) return;
 
   const setSelected = (activeCard) => {
-    cards.forEach(c => c.classList.remove('is-selected'));
-    activeCard.classList.add('is-selected');
+    cards.forEach((card) => card.classList.remove("is-selected"));
+    activeCard.classList.add("is-selected");
   };
 
-  cards.forEach(card => {
-    card.addEventListener('click', () => {
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
       const pest =
-        card.getAttribute('data-pest') ||
-        card.querySelector('.help-name')?.textContent?.trim() ||
-        card.querySelector('.help-title')?.textContent?.trim() ||
-        'Pest';
+        card.getAttribute("data-pest") ||
+        $(".help-name", card)?.textContent?.trim() ||
+        "Pest";
 
-      const msg =
-        card.getAttribute('data-msg') ||
-        'Tell us what’s happening and we’ll recommend the best treatment.';
+      const message =
+        card.getAttribute("data-msg") ||
+        "Tell us what’s happening and we’ll recommend the best treatment.";
 
       setSelected(card);
 
       title.innerHTML = `Recommended next step: <span class="help-highlight">${pest}</span>`;
-      text.textContent = msg;
+      text.textContent = message;
 
-      if (quote) quote.href = `contact.html?pest=${encodeURIComponent(pest)}`;
+      if (quoteButton) {
+        quoteButton.href = `contact.html?pest=${encodeURIComponent(pest)}`;
+      }
 
       result.hidden = false;
-      result.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+      result.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "center",
+      });
     });
   });
-})();
-// ============================================
-// CONTACT PREFILL (pest from query string)
-// ============================================
-(() => {
+}
+
+// ======================================================
+// CONTACT PREFILL FROM QUERY STRING
+// ======================================================
+function initContactPrefill() {
   const params = new URLSearchParams(window.location.search);
-  const pest = params.get('pest');
-  const pestSelect = document.getElementById('pest');
+  const pest = params.get("pest");
+  const pestSelect = $("#pest");
 
   if (!pest || !pestSelect) return;
 
-  // Try exact match first
-  let opt = Array.from(pestSelect.options).find(o => o.value === pest);
+  const pestMap = {
+    cockroaches: "cockroaches",
+    "german cockroaches": "cockroaches",
+    spiders: "spiders",
+    rodents: "rodents",
+    "rats & mice": "rodents",
+    rats: "rodents",
+    mice: "rodents",
+    ants: "ants",
+    "bed bugs": "bed-bugs",
+    fleas: "fleas",
+    wasps: "bees-wasps",
+    bees: "bees-wasps",
+    "bees & wasps": "bees-wasps",
+    termites: "termites",
+    "termites (pre-construction)": "termites",
+    other: "other",
+  };
 
-  // Fallback: case-insensitive match by value OR visible text
-  if (!opt) {
-    const p = pest.trim().toLowerCase();
-    opt = Array.from(pestSelect.options).find(o =>
-      (o.value || "").trim().toLowerCase() === p ||
-      (o.textContent || "").trim().toLowerCase() === p
-    );
+  const normalized = pest.trim().toLowerCase();
+  const mappedValue = pestMap[normalized];
+
+  if (mappedValue) {
+    pestSelect.value = mappedValue;
+    return;
   }
 
-  if (opt) pestSelect.value = opt.value;
-})();
-  // ============================================
-  // SERVICE CARD 3D MOUSE TILT
-  // ============================================
-  document.querySelectorAll('.service-card').forEach(card => {
-    card.addEventListener('mousemove', e => {
+  const matchedOption = Array.from(pestSelect.options).find((option) => {
+    const optionValue = option.value.trim().toLowerCase();
+    const optionText = option.textContent.trim().toLowerCase();
+    return optionValue === normalized || optionText === normalized;
+  });
+
+  if (matchedOption) {
+    pestSelect.value = matchedOption.value;
+  }
+}
+
+// ======================================================
+// SERVICE CARD TILT
+// ======================================================
+function initServiceCardTilt({ prefersReducedMotion, hasFinePointer }) {
+  if (prefersReducedMotion || !hasFinePointer) return;
+
+  $$(".service-card").forEach((card) => {
+    card.addEventListener("mousemove", (event) => {
       const rect = card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width - 0.5;
-      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      const x = (event.clientX - rect.left) / rect.width - 0.5;
+      const y = (event.clientY - rect.top) / rect.height - 0.5;
+
       card.style.transform = `
         translateY(-4px)
-        perspective(600px)
+        perspective(700px)
         rotateX(${-y * 6}deg)
         rotateY(${x * 6}deg)
       `;
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
+
+    card.addEventListener("mouseleave", () => {
+      card.style.transform = "";
     });
-  });
-
-  // ============================================
-  // FAQ ACCORDION
-  // ============================================
-  document.querySelectorAll('.faq-item').forEach(item => {
-    const question = item.querySelector('.faq-question');
-    if (question) {
-      question.addEventListener('click', () => {
-        const isActive = item.classList.contains('active');
-        document.querySelectorAll('.faq-item').forEach(f => f.classList.remove('active'));
-        if (!isActive) item.classList.add('active');
-      });
-    }
-  });
-
-// ============================================
-// CONTACT FORM (FormSubmit) — reliable + professional
-// ============================================
-const contactForm = document.getElementById('contactForm');
-const formSuccess = document.getElementById('formSuccess');
-
-if (contactForm) {
-  let isSubmitting = false;
-
-  contactForm.addEventListener('submit', function (e) {
-    // Stop double clicks
-    if (isSubmitting) {
-      e.preventDefault();
-      return;
-    }
-
-    // If HTML validation fails, let the browser show it (don’t submit)
-    if (!contactForm.checkValidity()) {
-      return;
-    }
-
-    isSubmitting = true;
-
-    // ✅ Set Reply-To so the email you receive can be replied to directly
-    const email = document.getElementById('email')?.value?.trim();
-    const replyTo = contactForm.querySelector('input[name="_replyto"]');
-    if (replyTo && email) replyTo.value = email;
-
-    // ✅ Optional: spam honeypot (only if you add the hidden input)
-    const honey = contactForm.querySelector('input[name="_honey"]');
-    if (honey && honey.value.trim().length) {
-      e.preventDefault();
-      return;
-    }
-
-    // ✅ Show success UI immediately (but still allow normal submit)
-    contactForm.style.display = 'none';
-    if (formSuccess) {
-      formSuccess.style.display = 'block';
-      formSuccess.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
-
-    // ✅ IMPORTANT: do NOT preventDefault and do NOT call contactForm.submit()
-    // Let FormSubmit handle sending the email normally.
   });
 }
 
-  // ============================================
-  // REQUIRED FIELD VALIDATION STYLE
-  // ============================================
-  document.querySelectorAll('input[required], select[required], textarea[required]').forEach(input => {
-    input.addEventListener('invalid', e => {
-      e.preventDefault();
-      input.classList.add('error');
-    });
-    input.addEventListener('input', () => input.classList.remove('error'));
-  });
+// ======================================================
+// FAQ ACCORDION
+// ======================================================
+function initFAQ() {
+  $$(".faq-item").forEach((item) => {
+    const question = $(".faq-question", item);
+    if (!question) return;
 
-  // ============================================
-  // STAGGERED ANIMATION DELAYS
-  // ============================================
-  const stagger = (sel, delay) => {
-    document.querySelectorAll(sel).forEach((el, i) => {
-      el.style.transitionDelay = `${i * delay}ms`;
-    });
-  };
+    question.addEventListener("click", () => {
+      const isActive = item.classList.contains("active");
 
-  stagger('.service-card', 80);
-  stagger('.process-card', 150);
-  stagger('.approach-card', 80);
-  stagger('.service-detail-card', 80);
-  stagger('.why-list li', 70);
-  stagger('.credentials-list li', 70);
-  stagger('.about-stat-card', 100);
-  stagger('.additional-card', 80);
+      $$(".faq-item").forEach((faqItem) => faqItem.classList.remove("active"));
 
-  // ============================================
-  // SMOOTH ANCHOR SCROLLING
-  // ============================================
-  document.querySelectorAll('a[href^="#"]').forEach(link => {
-    link.addEventListener('click', e => {
-      const href = link.getAttribute('href');
-      if (href && href !== '#') {
-        const target = document.querySelector(href);
-        if (target) {
-          e.preventDefault();
-          const offset = header ? header.offsetHeight : 0;
-          window.scrollTo({ top: target.offsetTop - offset, behavior: 'smooth' });
-        }
+      if (!isActive) {
+        item.classList.add("active");
       }
     });
   });
+}
 
-  // ============================================
-  // LAZY LOAD IMAGES
-  // ============================================
-  if ('IntersectionObserver' in window) {
-    const imgObs = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const img = entry.target;
-          if (img.dataset.src) {
-            img.src = img.dataset.src;
-            img.classList.add('loaded');
-            imgObs.unobserve(img);
-          }
-        }
-      });
-    });
-    document.querySelectorAll('img[data-src]').forEach(img => imgObs.observe(img));
-  }
+// ======================================================
+// CONTACT FORM
+// ======================================================
+function initContactForm() {
+  const contactForm = $("#contactForm");
+  if (!contactForm) return;
 
-  // ============================================
-  // PHONE TRACKING
-  // ============================================
-  document.querySelectorAll('a[href^="tel:"]').forEach(link => {
-    link.addEventListener('click', () => {
-      console.log('Phone call initiated:', link.href);
-    });
-  });
-// ============================================
-// REVIEWS CAROUSEL — FORCED AUTOSCROLL + DEBUG
-// ============================================
-(() => {
-  const carousel = document.querySelector('[data-carousel]');
-  if (!carousel) { console.log("❌ No [data-carousel] found"); return; }
-
-  const track = carousel.querySelector('[data-track]');
-  if (!track) { console.log("❌ No [data-track] found"); return; }
-
-  const originals = Array.from(track.children).filter(el => el.classList.contains('review-card'));
-  console.log("✅ Reviews found:", originals.length);
-
-  if (originals.length < 2) { console.log("❌ Need at least 2 review cards"); return; }
-
-  // Clone for loop (once)
-  if (!track.dataset.looped) {
-    originals.forEach(card => track.appendChild(card.cloneNode(true)));
-    track.dataset.looped = "true";
-    console.log("✅ Cloned reviews for looping");
-  }
-
-  // HARD force styles (even if CSS is wrong)
-  track.style.scrollSnapType = "none";
-  track.style.scrollBehavior = "auto";
-
-  let speed = 2;       // try 0.35–0.8
-  const slow = 0.2;
-
-  const loopPoint = () => track.scrollWidth / 2;
-
-  let frames = 0;
-
-  const tick = () => {
-    // Force movement even if sizes aren't ready yet
-    track.scrollLeft += speed;
-
-    const lp = loopPoint();
-    if (lp > 0 && track.scrollLeft >= lp) track.scrollLeft -= lp;
-
-    // Debug every ~2 seconds
-    frames++;
-    if (frames % 120 === 0) {
-      console.log("▶️ autoplay running | scrollLeft:", Math.round(track.scrollLeft), "| scrollWidth:", Math.round(track.scrollWidth), "| clientWidth:", Math.round(track.clientWidth));
-    }
-
-    requestAnimationFrame(tick);
-  };
-
-  requestAnimationFrame(tick);
-
-  console.log("✅ Reviews autoplay STARTED");
-})();
-  // ============================================
-  // CONSOLE BRAND
-  // ============================================
-  console.log('%c🕷️ PestControlSYD', 'font-size:20px;font-weight:bold;color:#C41E3A;');
-  console.log('%cRemastered. Dark. Dangerous.', 'font-size:13px;color:#888;');
-});
-
-// ============================================
-// REVIEW FORM UX (FormSubmit) — email to business
-// ============================================
-(() => {
-  const form = document.getElementById('reviewForm');
-  const success = document.getElementById('reviewSuccess');
-  if (!form) return;
-
+  const submitButton = $(".form-submit", contactForm);
   let isSubmitting = false;
 
-  form.addEventListener('submit', (e) => {
-    if (isSubmitting) { e.preventDefault(); return; }
-    if (!form.checkValidity()) return;
-
-    // honeypot spam check
-    const honey = form.querySelector('input[name="_honey"]');
-    if (honey && honey.value.trim().length) {
-      e.preventDefault();
+  contactForm.addEventListener("submit", (event) => {
+    if (isSubmitting) {
+      event.preventDefault();
       return;
     }
 
-    // set reply-to if email provided
-    const reviewEmail = document.getElementById('reviewEmail')?.value?.trim();
-    const replyTo = form.querySelector('input[name="_replyto"]');
-    if (replyTo && reviewEmail) replyTo.value = reviewEmail;
+    if (!contactForm.checkValidity()) return;
+
+    const honey = contactForm.querySelector('input[name="_honey"]');
+    if (honey && honey.value.trim().length) {
+      event.preventDefault();
+      return;
+    }
+
+    const email = $("#email", contactForm)?.value?.trim();
+    const replyTo = contactForm.querySelector('input[name="_replyto"]');
+
+    if (replyTo && email) {
+      replyTo.value = email;
+    }
 
     isSubmitting = true;
 
-    // show success UI instantly (still submits normally)
-    if (success) {
-      success.style.display = 'block';
-      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    if (submitButton) {
+      submitButton.disabled = true;
+      submitButton.setAttribute("aria-busy", "true");
+      submitButton.textContent = "Sending...";
     }
   });
-})();
-
-// ============================================
-// DEBOUNCE UTILITY
-// ============================================
-function debounce(fn, wait) {
-  let t;
-  return (...args) => {
-    clearTimeout(t);
-    t = setTimeout(() => fn(...args), wait);
-  };
 }
 
-window.addEventListener('resize', debounce(() => {}, 250));
+// ======================================================
+// REVIEW FORM
+// ======================================================
+function initReviewForm() {
+  const reviewForm = $("#reviewForm");
+  if (!reviewForm) return;
+
+  const reviewSubmit = $('button[type="submit"]', reviewForm);
+  let isSubmitting = false;
+
+  reviewForm.addEventListener("submit", (event) => {
+    if (isSubmitting) {
+      event.preventDefault();
+      return;
+    }
+
+    if (!reviewForm.checkValidity()) return;
+
+    const honey = reviewForm.querySelector('input[name="_honey"]');
+    if (honey && honey.value.trim().length) {
+      event.preventDefault();
+      return;
+    }
+
+    const reviewEmail = $("#reviewEmail", reviewForm)?.value?.trim();
+    const replyTo = reviewForm.querySelector('input[name="_replyto"]');
+
+    if (replyTo && reviewEmail) {
+      replyTo.value = reviewEmail;
+    }
+
+    isSubmitting = true;
+
+    if (reviewSubmit) {
+      reviewSubmit.disabled = true;
+      reviewSubmit.setAttribute("aria-busy", "true");
+      reviewSubmit.textContent = "Submitting...";
+    }
+  });
+}
+
+// ======================================================
+// REQUIRED FIELD VALIDATION
+// ======================================================
+function initFieldValidation() {
+  $$("input[required], select[required], textarea[required]").forEach((field) => {
+    field.addEventListener("invalid", (event) => {
+      event.preventDefault();
+      field.classList.add("error");
+    });
+
+    field.addEventListener("input", () => {
+      field.classList.remove("error");
+    });
+
+    field.addEventListener("change", () => {
+      field.classList.remove("error");
+    });
+  });
+}
+
+// ======================================================
+// STAGGERED DELAYS
+// ======================================================
+function initStaggerDelays() {
+  const applyStagger = (selector, delay) => {
+    $$(selector).forEach((element, index) => {
+      element.style.transitionDelay = `${index * delay}ms`;
+    });
+  };
+
+  applyStagger(".service-card", 80);
+  applyStagger(".process-card", 140);
+  applyStagger(".approach-card", 80);
+  applyStagger(".service-detail-card", 80);
+  applyStagger(".why-list li", 70);
+  applyStagger(".credentials-list li", 70);
+  applyStagger(".about-stat-card", 100);
+  applyStagger(".additional-card", 80);
+}
+
+// ======================================================
+// SMOOTH ANCHOR LINKS
+// ======================================================
+function initSmoothAnchors({ prefersReducedMotion }) {
+  $$('a[href^="#"]').forEach((link) => {
+    link.addEventListener("click", (event) => {
+      const href = link.getAttribute("href");
+      if (!href || href === "#") return;
+
+      const target = $(href);
+      if (!target) return;
+
+      event.preventDefault();
+
+      const header = $(".header");
+      const offset = header ? header.offsetHeight : 0;
+      const targetTop = target.getBoundingClientRect().top + window.scrollY - offset;
+
+      window.scrollTo({
+        top: targetTop,
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+      });
+    });
+  });
+}
+
+// ======================================================
+// LAZY LOAD IMAGES
+// ======================================================
+function initLazyImages() {
+  if (!("IntersectionObserver" in window)) return;
+
+  const lazyImages = $$("img[data-src]");
+  if (!lazyImages.length) return;
+
+  const imageObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      const image = entry.target;
+      const source = image.getAttribute("data-src");
+
+      if (source) {
+        image.src = source;
+        image.classList.add("loaded");
+      }
+
+      observer.unobserve(image);
+    });
+  });
+
+  lazyImages.forEach((image) => imageObserver.observe(image));
+}
+
+// ======================================================
+// PHONE TRACKING
+// ======================================================
+function initPhoneTracking() {
+  $$('a[href^="tel:"]').forEach((link) => {
+    link.addEventListener("click", () => {
+      console.log("Phone call initiated:", link.getAttribute("href"));
+    });
+  });
+}
+
+// ======================================================
+// REVIEWS CAROUSEL
+// ======================================================
+function initReviewsCarousel() {
+  const carousel = document.querySelector("[data-carousel]");
+  if (!carousel) return;
+
+  const track = carousel.querySelector("[data-track]");
+  const dotsContainer = carousel.querySelector("[data-dots]");
+  if (!track) return;
+
+  const originalCards = Array.from(track.querySelectorAll(".review-card"));
+  if (originalCards.length < 2) return;
+
+  if (!track.dataset.looped) {
+    originalCards.forEach((card) => {
+      track.appendChild(card.cloneNode(true));
+    });
+    track.dataset.looped = "true";
+  }
+
+  track.style.scrollSnapType = "none";
+  track.style.scrollBehavior = "auto";
+  track.style.overflowX = "auto";
+
+  let animationId = null;
+  let paused = false;
+  let position = 0;
+  const speed = 1.2;
+
+  const getLoopWidth = () => track.scrollWidth / 2;
+
+  const buildDots = () => {
+    if (!dotsContainer || dotsContainer.children.length) return;
+
+    originalCards.forEach((_, index) => {
+      const dot = document.createElement("button");
+      dot.type = "button";
+      dot.className = "rev-dot";
+      dot.setAttribute("aria-label", `Go to review ${index + 1}`);
+
+      dot.addEventListener("click", () => {
+        const loopWidth = getLoopWidth();
+        const step = loopWidth / originalCards.length;
+        position = index * step;
+        track.scrollLeft = position;
+        updateDots();
+      });
+
+      dotsContainer.appendChild(dot);
+    });
+  };
+
+  const updateDots = () => {
+    if (!dotsContainer || !dotsContainer.children.length) return;
+
+    const loopWidth = getLoopWidth();
+    if (!loopWidth) return;
+
+    const step = loopWidth / originalCards.length;
+    if (!step) return;
+
+    const normalized = ((position % loopWidth) + loopWidth) % loopWidth;
+    const activeIndex = Math.round(normalized / step) % originalCards.length;
+
+    Array.from(dotsContainer.children).forEach((dot, index) => {
+      dot.classList.toggle("is-active", index === activeIndex);
+    });
+  };
+
+  const tick = () => {
+    if (!paused) {
+      const loopWidth = getLoopWidth();
+
+      position += speed;
+
+      if (loopWidth > 0 && position >= loopWidth) {
+        position -= loopWidth;
+      }
+
+      track.scrollLeft = position;
+      updateDots();
+    }
+
+    animationId = requestAnimationFrame(tick);
+  };
+
+  const stop = () => {
+    if (animationId) cancelAnimationFrame(animationId);
+    animationId = null;
+  };
+
+  buildDots();
+
+  requestAnimationFrame(() => {
+    position = track.scrollLeft || 0;
+    updateDots();
+    stop();
+    animationId = requestAnimationFrame(tick);
+  });
+
+  window.addEventListener("load", () => {
+    position = track.scrollLeft || 0;
+    updateDots();
+  });
+
+  carousel.addEventListener("mouseenter", () => {
+    paused = true;
+  });
+
+  carousel.addEventListener("mouseleave", () => {
+    paused = false;
+  });
+
+  carousel.addEventListener("focusin", () => {
+    paused = true;
+  });
+
+  carousel.addEventListener("focusout", () => {
+    paused = false;
+  });
+
+  carousel.addEventListener(
+    "touchstart",
+    () => {
+      paused = true;
+    },
+    { passive: true }
+  );
+
+  carousel.addEventListener(
+    "touchend",
+    () => {
+      paused = false;
+    },
+    { passive: true }
+  );
+
+  window.addEventListener(
+    "resize",
+    debounce(() => {
+      const loopWidth = getLoopWidth();
+      if (loopWidth > 0 && position >= loopWidth) {
+        position = position % loopWidth;
+      }
+      track.scrollLeft = position;
+      updateDots();
+    }, 150)
+  );
+
+  window.addEventListener("beforeunload", stop);
+}
+
+// ======================================================
+// SUCCESS STATES FROM QUERY STRING
+// ======================================================
+function initQuerySuccessStates({ prefersReducedMotion }) {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("sent") === "1") {
+    const contactForm = $("#contactForm");
+    const formSuccess = $("#formSuccess");
+
+    if (contactForm) {
+      contactForm.style.display = "none";
+    }
+
+    if (formSuccess) {
+      formSuccess.style.display = "block";
+
+      formSuccess.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "center",
+      });
+    }
+  }
+
+  if (params.get("review") === "1") {
+    const reviewSuccess = $("#reviewSuccess");
+
+    if (reviewSuccess) {
+      reviewSuccess.style.display = "block";
+
+      reviewSuccess.scrollIntoView({
+        behavior: prefersReducedMotion ? "auto" : "smooth",
+        block: "center",
+      });
+    }
+  }
+}
+
+// ======================================================
+// CONSOLE BRANDING
+// ======================================================
+function initConsoleBrand() {
+  console.log(
+    "%cPestControlSYD",
+    "font-size:20px;font-weight:700;color:#c9a863;letter-spacing:0.08em;"
+  );
+  console.log(
+    "%cPremium customer-ready experience loaded.",
+    "font-size:12px;color:#b8b0a6;"
+  );
+}
