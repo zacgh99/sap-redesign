@@ -738,7 +738,7 @@ body.cursor-hover .cursor-ring {
 .cta-button-alt {
   background: rgba(24, 33, 39, 0.04);
   border: 1px solid rgba(24, 33, 39, 0.14);
-  color: var(--ink);
+  color: var(--white);
 }
 
 .cta-button-alt:hover,
