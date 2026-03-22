@@ -833,11 +833,16 @@ body.cursor-hover .cursor-ring {
     linear-gradient(180deg, rgba(255, 255, 255, 0.34), transparent);
   opacity: 0;
   transition: opacity var(--transition);
+  pointer-events: none;
 }
 
 .service-card:hover {
   border-color: rgba(185, 138, 71, 0.28);
   box-shadow: var(--shadow-card);
+}
+
+.service-card::after {
+  pointer-events: none;
 }
 
 .service-card:hover::before {
@@ -871,8 +876,9 @@ body.cursor-hover .cursor-ring {
   margin-bottom: 18px;
 }
 
-.service-link,
-.service-detail-link {
+.service-link {
+  position: relative;
+  z-index: 2;
   text-decoration: none;
   color: var(--gold-strong);
   font-size: 0.88rem;
